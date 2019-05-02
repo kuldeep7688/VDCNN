@@ -6,6 +6,8 @@ import torch.nn as nn
 import torch.optim as optim
 from torchtext import data
 from argparse import ArgumentParser
+import warnings
+warnings.filterwarnings("ignore")
 
 # importing local modules
 script_path = os.path.abspath('')
@@ -141,7 +143,7 @@ if __name__ == "__main__":
     del traindl, valdl
 
     vocab_size = len(text_field.vocab.stoi)
-    model = model.VDCNN(EMBEDDING_DIM, vocab_size, N_CLASSES)
+    model = model.MDCNN(EMBEDDING_DIM, vocab_size, N_CLASSES)
     print(model)
     print_number_of_trainable_parameters(model)
     criterion = nn.BCEWithLogitsLoss()
@@ -149,7 +151,7 @@ if __name__ == "__main__":
     model.to(DEVICE)
     criterion.to(DEVICE)
 
-    base_dev_acc = 0.0
+    base_dev_roc = 0.0
     for epoch in range(EPOCHS):
 
         train_loss, train_acc, train_roc, train_roc_main = train(model, train_dl, optimizer, criterion)
@@ -162,11 +164,12 @@ if __name__ == "__main__":
             f'| Epoch: {epoch + 1:02} | Val. Loss: {valid_loss:.3f} | \
             Val. ROC: {valid_roc * 100:.2f} | Val. Acc: {valid_acc * 100:.2f}% |'
         )
+        print()
         print(f'| Train Main ROC: {train_roc_main * 100:.2f} | Val. Main ROC: {valid_roc_main * 100:.2f} ')
         is_best = False
-        if base_dev_acc < valid_acc:
+        if base_dev_roc < valid_roc_main:
             is_best = True,
-            base_dev_acc = valid_acc
+            base_dev_roc = valid_roc_main
 
         save_checkpoint({
             'epoch': epoch + 1,
