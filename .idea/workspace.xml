@@ -3,11 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="6700b2d5-b6b3-42eb-adce-15265498461d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/train_vdcnn_on_toxic_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train_vdcnn_on_toxic_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vdcnn_implementation_in_torch.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/vdcnn_implementation_in_torch.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vdcnn_toxic.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/vdcnn_toxic.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vdcnn_toxic_one_class.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/vdcnn_toxic_one_class.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mukesh_Code_Implementation.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_vdcnn_on_toxic_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train_vdcnn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utilities.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vdcnn_implementation_in_torch.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vdcnn_toxic.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vdcnn_toxic_one_class.ipynb" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,30 +19,12 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/train_vdcnn_on_toxic_data.py">
+        <entry file="file://$PROJECT_DIR$/scripts/train_vdcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="135" column="50" selection-start-line="135" selection-start-column="50" selection-end-line="135" selection-end-column="50" />
+            <state relative-caret-position="388">
+              <caret line="108" column="14" selection-start-line="108" selection-start-column="14" selection-end-line="108" selection-end-column="14" />
               <folding>
                 <element signature="e#31#40#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/model/model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#98#262#0" />
-                <element signature="e#295#409#0" />
-                <element signature="e#456#1958#0" />
-                <element signature="e#2010#2876#0" />
-                <element signature="e#2910#3076#0" />
-                <element signature="e#3518#7075#0" />
               </folding>
             </state>
           </provider>
@@ -50,8 +33,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/utilities.py">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="132" column="21" selection-start-line="132" selection-start-column="21" selection-end-line="132" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/model/model.py">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="22">
-              <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
+              <caret line="163" lean-forward="true" selection-start-line="163" selection-end-line="163" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -77,17 +75,19 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/model/vdcnn.py" />
-        <option value="$PROJECT_DIR$/utils/utilities.py" />
+        <option value="$PROJECT_DIR$/model/model.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/scripts/train_vdcnn_on_toxic_data.py" />
-        <option value="$PROJECT_DIR$/model/model.py" />
+        <option value="$PROJECT_DIR$/scripts/train_vdcnn_on.py" />
+        <option value="$PROJECT_DIR$/scripts/train_vdcnn.py" />
+        <option value="$PROJECT_DIR$/utils/utilities.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="302" />
-    <option name="y" value="270" />
-    <option name="width" value="1360" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="2244" />
+    <option name="y" value="268" />
+    <option name="width" value="1350" />
     <option name="height" value="1000" />
   </component>
   <component name="ProjectView">
@@ -95,7 +95,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -106,18 +105,24 @@
             <path>
               <item name="very_deep_convolutional_networks" type="b2602c69:ProjectViewProjectNode" />
               <item name="very_deep_convolutional_networks" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="very_deep_convolutional_networks" type="b2602c69:ProjectViewProjectNode" />
+              <item name="very_deep_convolutional_networks" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -163,14 +168,27 @@
       <option name="project" value="LOCAL" />
       <updated>1556442199469</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="removed datasets folder and added filetypes in gitignore">
+      <created>1556807190224</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1556807190224</updated>
+    </task>
+    <task id="LOCAL-00005" summary="improved the vdcnn callable function. Can call 9, 17, 29, 49 layers as wanted.">
+      <created>1556807280987</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1556807280987</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1920" height="1010" extended-state="6" />
-    <editor active="true" />
+    <frame x="2244" y="268" width="1350" height="1000" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.17634636" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25226587" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -181,7 +199,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32912844" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32912844" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.136" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -233,12 +251,11 @@
     <MESSAGE value="Initial Commit and repo structure." />
     <MESSAGE value="resolved problem with vdcnn convolutionalresblock" />
     <MESSAGE value="removed datasets folder and added filetypes in gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed datasets folder and added filetypes in gitignore" />
+    <MESSAGE value="improved the vdcnn callable function. Can call 9, 17, 29, 49 layers as wanted." />
+    <option name="LAST_COMMIT_MESSAGE" value="improved the vdcnn callable function. Can call 9, 17, 29, 49 layers as wanted." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vdcnn_implementation_in_torch.ipynb">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/vdcnn_implementation_in_torch.ipynb" />
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/site-packages/torch/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -258,40 +275,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="176">
+          <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/train_vdcnn_on_toxic_data.py">
+    <entry file="file://$PROJECT_DIR$/utils/utilities.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="135" column="50" selection-start-line="135" selection-start-column="50" selection-end-line="135" selection-end-column="50" />
+        <state relative-caret-position="432">
+          <caret line="132" column="21" selection-start-line="132" selection-start-column="21" selection-end-line="132" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/train_vdcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="108" column="14" selection-start-line="108" selection-start-column="14" selection-end-line="108" selection-end-column="14" />
           <folding>
             <element signature="e#31#40#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/utilities.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
+        <state relative-caret-position="22">
+          <caret line="163" lean-forward="true" selection-start-line="163" selection-end-line="163" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#98#262#0" />
-            <element signature="e#295#409#0" />
-            <element signature="e#456#1958#0" />
-            <element signature="e#2010#2876#0" />
-            <element signature="e#2910#3076#0" />
-            <element signature="e#3518#7075#0" />
           </folding>
         </state>
       </provider>
