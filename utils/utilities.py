@@ -2,7 +2,8 @@ import torch
 import numpy as np
 import pyprind
 import pickle
-from sklearn.metrics import roc_auc_score
+from tqdm import tqdm
+from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 
 
 CSV_FIELDS_DICT = {
@@ -81,86 +82,152 @@ class BatchWrapper:
         return len(self.dl)
 
 
-def train(model, iterator, optimizer, criterion, n_classes):
-    epoch_loss = 0
-    epoch_acc = 0
+def train_epoch(
+    model, iterator, optimizer, criterion, n_classes,
+    print_stats_at_step, max_grad_norm
+):
+    avg_tr_loss = 0.0
+    avg_accuracy = 0.0
+
+    predictions_array = []
+    true_labels_array = []
 
     model.train()
+    steps = 0
     if n_classes <= 2:
-        epoch_roc = 0
-        all_y = []
-        all_out_list = []
-        bar = pyprind.ProgBar(len(iterator), bar_char='█')
-        for x, y in iterator:
-            # print(x.shape, y.shape)
-            # print(type(x))
-            # print(type(y))
-            optimizer.zero_grad()
+        avg_f1 = 0.0
+        tqdm_iterator = tqdm(iterator)
+        for x, labels in tqdm_iterator:
             outputs = model(x).squeeze(1)
-            loss = criterion(outputs, y)
+            predicted_probabilities = torch.sigmoid(outputs)
+
+            loss = criterion(outputs, labels)
             loss.backward()
+            step_loss = loss.item()
+
+            torch.nn.utils.clip_grad_norm_(
+                model.parameters(), max_grad_norm
+            )
             optimizer.step()
-            predictions = torch.sigmoid(outputs)
-            acc = binary_accuracy(y, predictions)
-            roc = roc_auc_score_fixed(y.cpu().detach().numpy(), predictions.cpu().detach().numpy())
-            epoch_loss += loss.item()
-            epoch_acc += acc.item()
-            epoch_roc += roc
-            all_out_list.append(predictions.cpu().detach().numpy())
-            all_y.append(y.cpu().detach().numpy())
-            bar.update()
-        roc_main = get_avg_roc_value(all_y, all_out_list)
-        return epoch_loss / len(iterator), epoch_acc / len(iterator), epoch_roc / len(iterator), roc_main
+            model.zero_grad()
+
+            avg_tr_loss += step_loss
+            predictions_array.extend(torch.round(predicted_probabilities).detach().cpu().tolist())
+            true_labels_array.extend(labels.detach().cpu().tolist())
+
+            if steps % print_stats_at_step == 0 and steps != 0:
+                temp_acc = accuracy_score(true_labels_array, predictions_array)
+                temp_f1 = f1_score(true_labels_array, predictions_array)
+
+                avg_accuracy += temp_acc
+                avg_f1 += temp_f1
+                tqdm_iterator.set_description(
+                    f'Iter {steps}| Avg. Tr Loss: {(avg_tr_loss / steps):.3f}| tr_st_acc: {temp_acc:.3f}| tr_st_f1: {temp_f1:.3f}'
+                )
+                predictions_array = []
+                true_labels_array = []
+
+            steps += 1
+        return avg_tr_loss / steps , avg_accuracy / ((steps // print_stats_at_step) + 1), avg_f1 / ((steps // print_stats_at_step) + 1)
     elif n_classes > 2:
-        bar = pyprind.ProgBar(len(iterator), bar_char='█')
-        for x, y in iterator:
-            optimizer.zero_grad()
-            outputs = model(x).squeeze(1)
-            loss = criterion(outputs, y)
-            acc = calculate_accuracy(outputs, y)
+        tqdm_iterator = tqdm(iterator)
+        for x, labels in tqdm_iterator:
+            outputs = model(x)
+            loss = criterion(outputs, labels)
             loss.backward()
+            avg_tr_loss += loss.item()
+
+            torch.nn.utils.clip_grad_norm_(
+                model.parameters(), max_grad_norm
+            )
             optimizer.step()
-            epoch_loss += loss.item()
-            epoch_acc += acc.item()
-            bar.update()
-        return epoch_loss / len(iterator), epoch_acc / len(iterator)
+            model.zero_grad()
+
+            _, predictions = torch.max(F.softmax(outputs, dim=-1), 1)
+            predictions_array.extend(predictions.detach().cpu().tolist())
+            true_labels_array.extend(labels.detach().cpu().tolist())
+
+            if steps % print_stats_at_step == 0 and steps != 0:
+                temp_acc = accuracy_score(true_labels_array, predictions_array)
+
+                avg_accuracy += temp_acc
+                tqdm_iterator.set_description(
+                    f'Iter {steps}| Avg. Tr Loss: {(avg_tr_loss / steps):.3f}| tr_st_acc: {temp_acc:.3f}'
+                )
+                predictions_array = []
+                true_labels_array = []
+
+            steps += 1
+        return avg_tr_loss / steps , avg_accuracy / ((steps // print_stats_at_step) + 1)
 
 
-def evaluate(model, iterator, criterion, n_classes):
-    epoch_loss = 0
-    epoch_acc = 0
+def evaluate_epoch(
+    model, iterator, criterion, n_classes,
+    print_stats_at_step
+):
+    avg_eval_loss = 0.0
+    avg_accuracy = 0.0
+
+    predictions_array = []
+    true_labels_array = []
+
     model.eval()
+    steps = 0
     if n_classes <= 2:
+        avg_f1 = 0.0
         with torch.no_grad():
-            epoch_roc = 0
-            all_y = []
-            all_out_list = []
-            bar = pyprind.ProgBar(len(iterator), bar_char='█')
-            for x, y in iterator:
+            tqdm_iterator = tqdm(iterator)
+            for x, labels in tqdm_iterator:
                 outputs = model(x).squeeze(1)
-                loss = criterion(outputs, y)
-                epoch_loss += loss.item()
-                predictions = torch.sigmoid(outputs)
-                acc = binary_accuracy(y, predictions)
-                roc = roc_auc_score_fixed(y.cpu().detach().numpy(), predictions.cpu().detach().numpy())
-                epoch_acc += acc.item()
-                epoch_roc += roc
-                all_out_list.append(predictions.cpu().detach().numpy())
-                all_y.append(y.cpu().detach().numpy())
-                bar.update()
-        roc_main = get_avg_roc_value(all_y, all_out_list)
-        return epoch_loss / len(iterator), epoch_acc / len(iterator), epoch_roc / len(iterator), roc_main
+                predicted_probabilities = torch.sigmoid(outputs)
+                loss = criterion(outputs, labels)
+                avg_eval_loss += loss.item()
+
+                predictions_array.extend(torch.round(predicted_probabilities).detach().cpu().tolist())
+                true_labels_array.extend(labels.detach().cpu().tolist())
+
+                if steps % print_stats_at_step == 0 and steps != 0:
+                    temp_acc = accuracy_score(true_labels_array, predictions_array)
+                    temp_f1 = f1_score(true_labels_array, predictions_array)
+
+                    avg_accuracy += temp_acc
+                    avg_f1 += temp_f1
+                    tqdm_iterator.set_description(
+                        f'Iter {steps}| Avg. Eval Loss: {(avg_eval_loss / steps):.3f}| ev_st_acc: {temp_acc:.3f}| ev_st_f1: {temp_f1:.3f}'
+                    )
+                    predictions_array = []
+                    true_labels_array = []
+
+                steps += 1
+        return avg_eval_loss / steps , avg_accuracy / ((steps // print_stats_at_step) + 1), avg_f1 / ((steps // print_stats_at_step) + 1)
     elif n_classes > 2:
         with torch.no_grad():
-            bar = pyprind.ProgBar(len(iterator), bar_char='█')
-            for x, y in iterator:
-                outputs = model(x).squeeze(1)
-                loss = criterion(outputs, y)
-                acc = calculate_accuracy(outputs, y)
-                epoch_loss += loss.item()
-                epoch_acc += acc.item()
-                bar.update()
-        return epoch_loss / len(iterator), epoch_acc / len(iterator)
+            tqdm_iterator = tqdm(iterator)
+            for x, labels in tqdm_iterator:
+                outputs = model(x)
+                loss = criterion(outputs, labels)
+                avg_tr_loss += loss.item()
+
+                torch.nn.utils.clip_grad_norm_(
+                    model.parameters(), max_grad_norm
+                )
+
+                _, predictions = torch.max(F.softmax(outputs, dim=-1), 1)
+                predictions_array.extend(predictions.detach().cpu().tolist())
+                true_labels_array.extend(labels.detach().cpu().tolist())
+
+                if steps % print_stats_at_step == 0 and steps != 0:
+                    temp_acc = accuracy_score(true_labels_array, predictions_array)
+
+                    avg_accuracy += temp_acc
+                    tqdm_iterator.set_description(
+                        f'Iter {steps}| Avg. Tr Loss: {(avg_eval_loss / steps):.3f}| tr_st_acc: {temp_acc:.3f}'
+                    )
+                    predictions_array = []
+                    true_labels_array = []
+
+                steps += 1
+        return avg_eval_loss / steps , avg_accuracy / ((steps // print_stats_at_step) + 1)
 
 
 def save_checkpoint(state, is_best, filename):

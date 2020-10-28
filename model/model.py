@@ -196,4 +196,3 @@ def get_vdcnn(depth, embedding_dim, vocab_size, n_classes, shortcut=False, pool_
         *model_layer_list
     )
     return model
-
