@@ -3,10 +3,6 @@
 *.csv
 *.pkl
 *.txt
-*.data/
-*data/
-*.ipynb
-*.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
