@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 import numpy as np
 import pyprind
 import pickle
@@ -206,11 +207,7 @@ def evaluate_epoch(
             for x, labels in tqdm_iterator:
                 outputs = model(x)
                 loss = criterion(outputs, labels)
-                avg_tr_loss += loss.item()
-
-                torch.nn.utils.clip_grad_norm_(
-                    model.parameters(), max_grad_norm
-                )
+                avg_eval_loss += loss.item()
 
                 _, predictions = torch.max(F.softmax(outputs, dim=-1), 1)
                 predictions_array.extend(predictions.detach().cpu().tolist())
@@ -221,7 +218,7 @@ def evaluate_epoch(
 
                     avg_accuracy += temp_acc
                     tqdm_iterator.set_description(
-                        f'Iter {steps}| Avg. Tr Loss: {(avg_eval_loss / steps):.3f}| tr_st_acc: {temp_acc:.3f}'
+                        f'Iter {steps}| Avg. Eval Loss: {(avg_eval_loss / steps):.3f}| tr_eval_acc: {temp_acc:.3f}'
                     )
                     predictions_array = []
                     true_labels_array = []
